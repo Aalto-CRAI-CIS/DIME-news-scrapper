@@ -1,0 +1,9 @@
+venv
+env
+.env
+__pycache__
+.DS_Store
+article_listing
+article_text
+article_json
+meta-data
