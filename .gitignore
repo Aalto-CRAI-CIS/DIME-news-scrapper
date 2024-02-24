@@ -6,4 +6,6 @@ __pycache__
 article_listing
 article_text
 article_json
-meta-data
+meta_data
+output
+test
