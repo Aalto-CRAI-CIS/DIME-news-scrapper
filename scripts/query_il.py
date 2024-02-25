@@ -12,19 +12,22 @@ import random
 from datetime import datetime
 from time import sleep
 from pathlib import Path
+import os
+from dotenv import load_dotenv, find_dotenv
 
 import aiohttp
 
 from query import query_il
 from metadata_writer import write_metadata
 
-output_path = Path('../article_listing')
-if not output_path.is_dir():
+load_dotenv(dotenv_path=find_dotenv())
+
+output_path = os.environ.get('FINNISH_NEWSCRAPER_OUTPUT')
+if not Path(output_path).is_dir():
     os.makedirs(output_path)
 
 SOURCE = 'Iltalehti'
 logging.basicConfig(level=logging.INFO)
-
 
 
 def _parse_arguments():
@@ -57,7 +60,9 @@ async def _amain():
 
     with open(output_fn, "w", encoding="utf-8") as output_file:
         csv_output = csv.writer(output_file)
-        csv_output.writerow(['id', 'source', 'url', 'apiURL', 'createdAt', 'updatedAt', 'headline'])
+        csv_output.writerow(['id', 'source', 'url', 'apiURL', 
+                            #  'createdAt', 'updatedAt', 
+                             'headline'])
         total_count = 0
         async with aiohttp.ClientSession() as session:
             async for response in query_il(session, args.query, args.from_date, args.to_date, args.limit):
@@ -70,14 +75,14 @@ async def _amain():
                                          article.source,
                                          article.url,
                                          article.api_url,
-                                         article.date_created,
-                                         article.date_modified,
+                                        #  article.date_created,
+                                        #  article.date_modified,
                                          article.title                                        
                                          ])
                 sleep(random.randrange(args.delay*2))
         logging.info("Processed %s articles in total.", total_count)
     
-    write_metadata(response.url, SOURCE, args.query, total_count, output_fn)
+    write_metadata(response.url, SOURCE, args.query, total_count, args.output)
 
 def main():
     asyncio.run(_amain())

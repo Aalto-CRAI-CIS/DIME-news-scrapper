@@ -1,12 +1,18 @@
-import pandas as pd
+from datetime import datetime, timedelta
 import argparse
 from pathlib import Path
+from dotenv import load_dotenv, find_dotenv
+import os
 
+import pandas as pd
 import newspaper
 from newspaper.mthreading import fetch_news
 
-output_path = Path('../article_text')
-if not output_path.is_dir():
+load_dotenv(dotenv_path=find_dotenv())
+
+input_path = os.environ.get('FINNISH_NEWSCRAPER_OUTPUT')
+output_path = os.environ.get('NEWSPAPER4K_OUTPUT')
+if not Path(output_path).is_dir():
     os.makedirs(output_path)
 
 def _parse_arguments():
@@ -25,13 +31,7 @@ def _parse_arguments():
     return args
 
 def get_articles_from_url(id_list: [str], url_list: [str], output_path: str) -> None:
-    dataframe = {
-        'id': [],
-        'url': [],
-        'publishedDate': [],
-        'author': [],
-        'text': [], 
-    }
+    dataframe = {}
     results = fetch_news(url_list, threads=4)
 
     dataframe['id'] = id_list
@@ -40,14 +40,16 @@ def get_articles_from_url(id_list: [str], url_list: [str], output_path: str) -> 
     dataframe['author'] = [x.authors for x in results]
     dataframe['text'] = [x.text for x in results]
     
-    # article_list['source'] = article_source
-    pd.DataFrame(dataframe).to_csv(article_input, index=False)
+    pd.DataFrame(dataframe).to_csv(output_path, index=False)
 
 def main():
     args = _parse_arguments()
     
     # Get article ids from input file
-    article_list = pd.read_csv(args.input_file)
+    if input_path in args.input_file:
+        article_list = pd.read_csv(args.input_file)
+    else: 
+        article_list = pd.read_csv(os.path.join(input_path, args.input_file))
     
     # Get input features
     id_list = article_list['id'].values
@@ -58,3 +60,6 @@ def main():
     
     # Call Dataframe creation function
     get_articles_from_url(id_list, url_list,out_fn)
+
+if __name__ == '__main__':
+    main()

@@ -24,8 +24,8 @@ class Article:
     url: str = attr.ib()
     api_url: str = attr.ib()
     title: str = attr.ib()
-    date_created: str = attr.ib()
-    date_modified: str = attr.ib()
+    # date_created: str = attr.ib()
+    # date_modified: str = attr.ib()
 
 @attr.s
 class Result:
@@ -98,10 +98,10 @@ async def query_yle(session: ClientSession, query: str, language: str, from_date
             articles = [Article(id=a['id'], 
                                 source='YLE News',
                                 url=a['url']['full'], 
-                                api_url=None, #TODO: get the right format for querying YLE article from their API
+                                api_url=f"https://articles.api.yle.fi//v2/articles.json",
                                 title=a['headline'],
-                                date_created=None, # Meta data of article within list doesn't contain createdAt date
-                                date_modified=a['datePublished'],
+                                # date_created=None, # Meta data of article within list doesn't contain createdAt date
+                                # date_modified=a['datePublished'],
                                 ) for a in response_json['data']]
             yield Result(articles, str(response.url), response_json['meta']['count'])
             params['offset'] += batch_size
@@ -156,12 +156,11 @@ async def query_is(session: ClientSession, query: str, from_date: str, to_date: 
             articles = [Article(id=a['id'],
                                 source='Ilta-Sanomat', 
                                 url='https://www.is.fi'+a['href'],
-                                # https://www.is.fi/api/data-for-path/%2Ftaloussanomat%2Fart-2000010243127.html
-                                api_url=f"https://www.is.fi/api/data-for-path/%2F{a['category'].lower()}%2Fart-{a['id']}.html",
+                                api_url=f"https://www.is.fi/api/data-for-path/{'%2F'.join(a['href'].split('/'))}",
                                 title=a['title'], 
-                                date_created=None, # Meta data of article within list doesn't contain createdAt date
-                                date_modified=a['displayDate'],
-                                category=a['category']) for a in response_json]
+                                # date_created=None, # Meta data of article within list doesn't contain createdAt date
+                                # date_modified=a['displayDate'],
+                                ) for a in response_json]
             yield Result(articles, str(response.url), -1)
             offset += batch_size
 
@@ -209,8 +208,8 @@ async def query_il(session: ClientSession, query: str, from_date: str, to_date: 
                     a['category']['category_name']+"/a/"+a['article_id'],
                 api_url="https://api.il.fi/v1/articles/" + a['article_id'],
                 title=a['title'],
-                date_created=a['published_at'],
-                date_modified=a['updated_at'] if a['updated_at'] is not None else a['published_at']
+                # date_created=a['published_at'],
+                # date_modified=a['updated_at'] if a['updated_at'] is not None else a['published_at']
                 ) for a in response_json]
             yield Result(articles, str(response.url), -1)
             params['offset'] += batch_size
@@ -267,9 +266,10 @@ async def query_hs(session: ClientSession, query: str, from_date: str, to_date: 
             articles = [Article(id=a['id'], 
                                 source='Helsingin Sanomat',
                                 url=_build_article_url(a['href']),
-                                api_url=f"https://www.hs.fi/api/data-for-path/%2F{a['category'].lower()}%2Fart-{a['id']}.html",
+                                api_url=f"https://www.hs.fi/api/data-for-path/{'%2F'.join(a['href'].split('/'))}",
                                 title=a['title'], 
-                                date_created=None, # Meta data of article within list doesn't contain createdAt date
-                                date_modified=a['displayDate']) for a in response_json]
+                                # date_created=None, # Meta data of article within list doesn't contain createdAt date
+                                # date_modified=a['displayDate']
+                                ) for a in response_json]
             yield Result(articles, str(response.url), -1)
             offset += batch_size
