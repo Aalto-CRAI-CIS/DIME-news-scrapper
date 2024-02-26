@@ -15,5 +15,7 @@ def parser_yle(json_obj):
             art_text.append(paragraph_parser_yle(art_id, art_data['data']))
             if 'authors' in art_data['data'][0].keys():
                 art_authors.append(parser_author_yle(art_data['data'][0]['authors']))
+            else:
+                art_authors.append([])
     return  art_text, art_authors
 
