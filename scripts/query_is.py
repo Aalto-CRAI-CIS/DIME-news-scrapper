@@ -41,7 +41,7 @@ def _parse_arguments():
         '-l', '--limit', default=100, type=int,
         help="number of articles to fetch per query (50/100)")
     parser.add_argument(
-        '-d', '--delay', default=1.0, type=float,
+        '-d', '--delay', default=1, type=int,
         help="number of seconds to wait between consecutive requests")
     parser.add_argument('--quiet', default=False,
                         action='store_true', help="Log only errors")
