@@ -6,9 +6,10 @@ import os
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(dotenv_path=find_dotenv())
-
+print(f'find_dotenv(): {find_dotenv()}')
 output_path = os.environ.get('METADATA_OUTPUT')
-
+print(f'output_path: {output_path}')
+print()
 if not Path(output_path).is_dir():
     os.makedirs(output_path)
    
