@@ -44,3 +44,10 @@ Given all the parameter, the scrapper will extract all articles, save it to outp
 ```
 
 NOTE: YLE API keys are required to query full article from their API. Create a copy of `.env-sample`, add YLE API keys, and rename the file to `.env`
+
+### Run on triton
+
+1. Create a conda environment and install required packages
+`conda env create --file conda-venv.yml`
+
+2. Run `sbatch submit.sh`
