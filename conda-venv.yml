@@ -1,0 +1,9 @@
+name: conda-venv
+channels:
+  - conda-forge
+dependencies:
+  - numpy
+  - pandas
+  - newspaper4k
+  - aiohttp
+  - python-dotenv
