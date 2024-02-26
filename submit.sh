@@ -12,4 +12,6 @@ source activate conda-venv
 bash scrape.sh -s 'Iltalehti' -q corona -f 2020-09-01 -t 2020-09-30 -o 'test.csv' -l 5
 
 # Remove conda env
-source deactivate
+conda deactivate
+
+echo "Successfully saved result to `./output`"
