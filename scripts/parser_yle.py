@@ -1,7 +1,7 @@
 from article_parser_utils import Author, ArticleText, safe_get_text_value
 
 def parser_author_yle(authors):
-    return [Author(safe_get_text_value (j, 'name')) for j in authors]
+    return [Author(safe_get_text_value (j, 'name')) for j in authors] if len(authors) > 0 else []
 
 def paragraph_parser_yle(json_id, body_lst):
     text = [safe_get_text_value(content_obj, 'text') for content_obj in body_lst[0]['content']]
