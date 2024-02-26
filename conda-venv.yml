@@ -4,6 +4,5 @@ channels:
 dependencies:
   - numpy
   - pandas
-  - newspaper4k
   - aiohttp
   - python-dotenv

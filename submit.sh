@@ -1,8 +1,6 @@
 #!/bin/bash
-#SBATCH --time=1:00:00
-#SBATCH --cpus-per-task=1
-#SBATCH --gres=gpu:0
-#SBATCH --mem=10G
+#SBATCH --time=00:05:00
+#SBATCH --mem=100M
 #SBATCH --output=gen.out
 
 echo "Hello $USER! You are on node $HOSTNAME.  The time is $(date)."
