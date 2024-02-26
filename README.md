@@ -35,13 +35,12 @@ Similar to the original [Finnish media scraper](https://github.com/hsci-r/finnis
 
 Given all the parameter, the scrapper will extract all articles, save it to output file specified by users. The meta-data will be save in form `<output-file-name>`-meta.csv
 ```
-    scrape  --target yle \
+    scrape  --source yle \
             --query ukraina \
             --from_date YYYY-MM-DD \
             --to_date YYYY-MM-DD \
             --limit 100 \
-            --output-file out.csv \
-            --delay 6
+            --output-file out.csv
 ```
 
 NOTE: YLE API keys are required to query full article from their API. Create a copy of `.env-sample`, add YLE API keys, and rename the file to `.env`

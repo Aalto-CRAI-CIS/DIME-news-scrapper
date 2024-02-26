@@ -4,7 +4,7 @@ from article_parser_utils import Author, ArticleText
 
 def parser_author_is(authors):
     # ['assetData']['analyticsMetadata']['author']
-    return [Author(n) for n in authors.split(', ')]
+    return [Author(n) for n in authors.split(', ')] if authors is not None else []
 
 def get_text_recursive_is(dict_object):
     # base case
