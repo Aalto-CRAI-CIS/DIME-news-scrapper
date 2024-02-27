@@ -47,11 +47,19 @@ def get_date_info(source, article_data):
             'updatedAt': article_data['updated_at']
         }
     if source == 'Ilta-Sanomat' or source == 'Helsingin Sanomat':
-        return {
-            # TODO: ## Find out what is the different between publishedDate, and these
-            'createdAt': article_data['assetData']['sharingMetadata']['startDate'], 
-            'updatedAt': article_data['assetData']['sharingMetadata']['modifiedDate']
-        }
+            if 'assetData' in article_data.keys():
+                return {    
+                    # TODO: ## Find out what is the different between publishedDate, and these
+                    'createdAt': article_data['assetData']['sharingMetadata']['startDate'], 
+                    'updatedAt': article_data['assetData']['sharingMetadata']['modifiedDate']
+                }
+            else:
+                print(f"NOTE: Article keys are: {article_data.keys()}")
+                return {    
+                    # TODO: ## Find out what is the different between publishedDate, and these
+                    'createdAt': '', 
+                    'updatedAt': ''
+                }
     if source == 'YLE News':
         return {
             # TODO: Get the correct attributes
