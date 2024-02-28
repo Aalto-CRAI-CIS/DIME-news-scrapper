@@ -67,10 +67,6 @@ async def _amain(article_ids:[str], article_api_url: [str], article_output_path:
             else:
                 responses[str(_id)] = await fetch_articles(session, url)
             time.sleep(6) # delay 6s after each request
-            if i % 100 == 1: # interval saving
-                interval_saving_path = f'{os.path.splitext(article_output_path)[0]}_temp.json'
-                with open(interval_saving_path, "w") as write_file:
-                    json.dump(responses, write_file)  
         
     with open(article_output_path, "w") as write_file:
         json.dump(responses, write_file)  
