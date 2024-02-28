@@ -124,7 +124,7 @@ echo "  output_file name without extension: $file_name_without_extension"
 ###############################################
 
 echo "Running $query_python_script ..."
-python3 $query_python_script -f $from_date -t $to_date -q $query -o $output_file -l $limit
+python3 $query_python_script -f $from_date -t $to_date -q "$query" -o $output_file -l $limit
 if [ $? -ne 0 ]; then
   echo "Error: first.py failed to execute."
   exit 1
@@ -138,7 +138,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Parse text and author for each article. Running scripts/article_parser.py ..."
-python3 scripts/article_parser.py -i $file_name_without_extension.json -o $output_file -s $source
+python3 scripts/article_parser.py -i $file_name_without_extension.json -o $output_file -s "$source"
 if [ $? -ne 0 ]; then
   echo "Error: second.py failed to execute."
   exit 1
@@ -151,48 +151,3 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-# echo "Get a list of articles meeting the query {} in news agent {} between {} and {}"
-
-# First year of Covid 01 Nov 2019 - 01 Nov 2020
-    # python3 scripts/query_il.py -f 2019-11-01 -t 2020-11-01 -q korona -o korona-il-nov-2019-2020.csv 
-
-    # python3 scripts/query_is.py -f 2019-11-01 -t 2020-02-01 -q korona -o korona-is-nov-2019-jan-2020.csv 
-    # python3 scripts/query_is.py -f 2020-02-01 -t 2020-05-01 -q korona -o korona-is-feb-apr-2020.csv 
-    # python3 scripts/query_is.py -f 2020-05-01 -t 2020-08-01 -q korona -o korona-is-may-jul-2020.csv 
-    # python3 scripts/query_is.py -f 2020-08-01 -t 2020-11-01 -q korona -o korona-is-aug-oct-2020.csv 
-
-    # python3 scripts/query_yle.py -f 2019-11-01 -t 2020-02-01 -q korona -o korona-yle-nov-2019-jan-2020.csv 
-    # python3 scripts/query_yle.py -f 2020-02-01 -t 2020-05-01 -q korona -o korona-yle-feb-apr-2020.csv 
-    # python3 scripts/query_yle.py -f 2020-05-01 -t 2020-08-01 -q korona -o korona-yle-may-jul-2020.csv 
-    # python3 scripts/query_yle.py -f 2020-08-01 -t 2020-11-01 -q korona -o korona-yle-aug-oct-2020.csv 
-
-# echo "Get a list of json responses when querying article API"
-# First year of Covid 01 Nov 2019 - 01 Nov 2020
-
-    # python3 scripts/fetch.py -i korona-il-nov-2019-2020.csv -o korona-il-nov-2019-2020.json
-    
-    # python3 scripts/fetch.py -i korona-is-nov-2019-jan-2020.csv -o korona-is-nov-2019-jan-2020.json
-    # python3 scripts/fetch.py -i korona-is-feb-apr-2020.csv -o korona-is-feb-apr-2020.json (NOT RUN YET)
-    # python3 scripts/fetch.py -i korona-is-may-jul-2020.csv -o korona-is-may-jul-2020.json
-
-# echo "Get the formatted text for each article"
-# python3 scripts/newspaper4k_scrapper.py -i korona-il-aug-dec-2023.csv -o korona-il-aug-dec-2023.csv
-
-# python3 scripts/article_parser.py -i korona-il-aug-dec-2023.json -o korona-il-aug-dec-2023.csv -s Iltalehti
-# python3 scripts/article_parser.py -i korona-is-aug-dec-2023.json -o korona-is-aug-dec-2023.csv -s Ilta-Sanomat
-# python3 scripts/article_parser.py -i korona-yle-aug-dec-2023.json -o korona-yle-aug-dec-2023.csv -s 'YLE News'
-
-# First year of Covid 01 Nov 2019 - 01 Nov 2020
-    # python3 scripts/article_parser.py -i korona-il-nov-2019-2020.json -o korona-il-nov-2019-2020.csv -s Iltalehti
-    
-    # python3 scripts/article_parser.py -i korona-is-nov-2019-jan-2020.json -o korona-is-nov-2019-jan-2020.csv -s Ilta-Sanomat
-
-# echo "Generate output file"
-# python3 scripts/merge.py -i korona-il-aug-dec-2023.csv -o korona-il-aug-dec-2023.csv
-# python3 scripts/merge.py -i korona-is-aug-dec-2023.csv -o korona-is-aug-dec-2023.csv
-# python3 scripts/merge.py -i korona-yle-aug-dec-2023.csv -o korona-yle-aug-dec-2023.csv
-
-# First year of Covid 01 Nov 2019 - 01 Nov 2020
-    # python3 scripts/merge.py -i korona-il-nov-2019-2020.csv -o korona-il-nov-2019-2020.csv
-    
-    # python3 scripts/merge.py -i korona-is-nov-2019-jan-2020.csv -o korona-is-nov-2019-jan-2020.csv
