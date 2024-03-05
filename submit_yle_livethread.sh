@@ -9,9 +9,9 @@ module purge
 module load miniconda
 source activate conda-venv
 
-python3 -m utils.fetch_yle_livethreads
+python3 -m live_thread_code.fetch_yle_livethreads
 
 # Remove conda env
 conda deactivate
 
-echo "Successfully saved result to ./output"
+echo "Successfully saved result to ./livethread_json"
