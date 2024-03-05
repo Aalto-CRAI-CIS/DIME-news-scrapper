@@ -40,9 +40,8 @@ def _parse_arguments():
     return args
 
 
-async def fetch_articles(session: ClientSession, url: str, params=None):
-    async with session.get(url, params=params) as response:
-        
+async def fetch_articles(session: ClientSession, url: str, params=None, headers= None):
+    async with session.get(url, params=params, headers=headers) as response:
         if response.status != 200:
             raise ValueError(f"Got unexpected response code {response.status} for {response.url}.")
         response_json = await response.json()
