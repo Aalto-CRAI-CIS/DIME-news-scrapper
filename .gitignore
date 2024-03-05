@@ -10,3 +10,7 @@ meta_data
 output
 test
 record_keeping.csv
+livethread_json
+slurm*
+gen*
+.ipynb_checkpoints/
