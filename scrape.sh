@@ -118,36 +118,37 @@ file_name=$(basename "$output_file")
 file_name_without_extension="${file_name%.*}"
 
 echo "Original output_file name: $file_name"
-echo "  output_file name without extension: $file_name_without_extension"
+echo "output_file name without extension: $file_name_without_extension"
 
 # Run python scrape scripts
 ###############################################
 
 echo "Running $query_python_script ..."
 python3 $query_python_script -f $from_date -t $to_date -q "$query" -o $output_file -l $limit
+echo "DEBUG"
 if [ $? -ne 0 ]; then
-  echo "Error: first.py failed to execute."
+  echo "Error: $query_python_script failed to execute."
   exit 1
 fi
 
 echo "Running scripts/fetch.py ..."
 python3 scripts/fetch.py -i $output_file -o $file_name_without_extension.json
 if [ $? -ne 0 ]; then
-  echo "Error: second.py failed to execute."
+  echo "Error: scripts/fetch.py failed to execute."
   exit 1
 fi
 
 echo "Parse text and author for each article. Running scripts/article_parser.py ..."
 python3 scripts/article_parser.py -i $file_name_without_extension.json -o $output_file -s "$source"
 if [ $? -ne 0 ]; then
-  echo "Error: second.py failed to execute."
+  echo "Error: scripts/article_parser.py failed to execute."
   exit 1
 fi
 
 echo "Generate output file. Running scripts/merge.py.py ..."
 python3 scripts/merge.py -i $output_file -o $output_file
 if [ $? -ne 0 ]; then
-  echo "Error: second.py failed to execute."
+  echo "Error: scripts/merge.py failed to execute."
   exit 1
 fi
 
