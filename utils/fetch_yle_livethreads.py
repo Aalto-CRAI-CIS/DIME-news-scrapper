@@ -2,9 +2,7 @@ import aiohttp
 from aiohttp import ClientSession
 import asyncio
 
-import logging
 import json
-from pathlib import Path
 import os
 import time 
 
@@ -37,3 +35,6 @@ async def _amain(feed_ids:[str], article_output_path: str) -> None:
         
     with open(article_output_path, "w") as write_file:
         json.dump(responses, write_file)
+
+def fetch_livethreads(feed_ids:[str], article_output_path: str):
+    asyncio.run(_amain(feed_ids, article_output_path))
