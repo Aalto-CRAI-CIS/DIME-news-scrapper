@@ -1,7 +1,7 @@
 #!/bin/bash
-# SBATCH --time=00:10:00
-# SBATCH --mem=100M
-# SBATCH --output=gen_yle_livethread.out
+#SBATCH --time=00:10:00
+#SBATCH --mem=100M
+#SBATCH --output=gen_yle_livethread.out
 
 echo "Hello $USER! You are on node $HOSTNAME.  The time is $(date)."
 

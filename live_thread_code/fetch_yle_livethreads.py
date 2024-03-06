@@ -6,23 +6,30 @@ import json
 import os
 import time 
 import sys
+
+import logging
+logging.basicConfig(level=logging.INFO)
+
 from pathlib import Path
 
 import pandas as pd
 
 sys.path.append(str(Path(__file__).parent.parent.parent))
-print(sys.path)
+logging.info(sys.path)
 from scripts.fetch import fetch_articles 
 
 async def _amain(feed_ids:[str], article_output_path: str) -> None:
     responses = {}
     async with aiohttp.ClientSession() as session:
         for i, _id in enumerate(feed_ids):
-            url = f'https://livefeed-data.api.yle.fi//v2/feed/{_id}/post'
+            _ids = _id.split('-')
+            _ids[1] = '2'
+            _id_new = '-'.join(_ids)
+            url = f'https://livefeed-data.api.yle.fi//v2/feed/{_id_new}/post'
             params = {
                 'app_id': 'ukko',
-                'createdBefore': '2024-03-05',
-                'limit': 10000
+                'createdBefore': '2024-02-27T04:02:54.010Z',
+                'limit': 5000
             }
             headers={
                 "Content-Type": "application/json",
@@ -32,13 +39,14 @@ async def _amain(feed_ids:[str], article_output_path: str) -> None:
                 "Sec-Fetch-Mode": "cors",
                 }
             try:
-                responses[str(_id)] = await fetch_articles(session, url, params, headers)
+                responses[str(_id_new)] = await fetch_articles(session, url, params, headers)
+                logging.info('SUCCESS when requesting live threads with url: %s', url)
             except Exception as e:
-                print(f'Got an error when requesting live threads with url: {url}')
+                logging.info('Got an error when requesting live threads with url: %s', url)
                 url = f'https://livefeed-data.api.yle.fi/v2/live/{_id}/updates'
                 responses[str(_id)] = await fetch_articles(session, url, params, headers)
-            time.sleep(60) # delay 6s after each request
-            if i % 100 == 1: # interval saving
+            time.sleep(6) # delay 6s after each request
+            if i % 2 == 1: # interval saving
                 interval_saving_path = f'{os.path.splitext(article_output_path)[0]}_temp.json'
                 with open(interval_saving_path, "w") as write_file:
                     json.dump(responses, write_file)  
@@ -52,9 +60,9 @@ def fetch_livethreads(feed_ids:[str], article_output_path: str):
 if __name__ == '__main__':
     # TODO: make this generic
     feed_ids = ['64-1-16',
+                 '64-1-2070',
                  '64-1-1044',
                  '64-1-2237',
-                 '64-1-2070',
                  '64-1-832',
                  '64-1-1080',
                  '64-1-2141',
@@ -62,7 +70,6 @@ if __name__ == '__main__':
                  '64-1-1177',
                  '64-1-1432',
                  '64-1-7',
-                 '64-1-2070',
                  '64-1-164',
                  '64-1-1438']
     output_path = 'livethread_json'
